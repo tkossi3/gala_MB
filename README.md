@@ -1,4 +1,4 @@
-# Gala Annuel Maison Baobab — React + Spring Boot
+# Gala Annuel Maison Baobab — Frontend statique + backend Python
 
 Site événementiel "Chic & Glamour" : vote par catégorie avec anti-doublon,
 galerie photo, agenda, thème clair/sombre, espace organisateur avec résultats
@@ -8,29 +8,20 @@ en direct et export CSV.
 
 ```
 gala-fullstack/
-  frontend/                  → React (Vite)
-    src/
-      App.jsx                → site public (hero, à propos, galerie, vote)
-      AdminApp.jsx            → espace organisateur
-      components/            → composants (Header, Hero, Gallery, VoteSection…)
-      data/categories.js      → catégories + nominés + photos (à modifier)
-      data/gallery.js          → photos de la galerie + frise chronologique
-      api.js                  → appels au backend
-      fingerprint.js           → empreinte d'appareil (anti-doublon, filet de sécurité)
-    index.html                → page publique
-    admin.html                 → page organisateur
+  frontend/                  → HTML / CSS / vanilla JavaScript
+    index.html               → page publique
+    admin.html               → espace organisateur protégé
+    styles.css               → thème sombre/clair, layout responsive
+    scripts/main.js          → logique interactive de vote et admin
+    data/categories.js       → catalogue de catégories + nominés
+    data/gallery.js          → métadonnées de la galerie photo
 
-  backend/                    → Spring Boot (Java 17)
-    src/main/java/com/baobab/gala/
-      model/                  → entités JPA (Vote, AppSettings)
-      repository/             → accès aux données (Spring Data JPA)
-      service/                → logique métier (anti-doublon, résultats, CSV)
-      controller/              → API REST (/api/...)
-    src/main/resources/
-      application.properties
-      static/                 → reçoit le build React en production
+  backend/                   → Python Flask
+    app.py                   → API de vote, anti-doublon, export CSV
+    requirements.txt         → dépendances Python
+    data/                    → base SQLite persistante
 
-  Dockerfile                  → image unique (React + Spring Boot)
+  Dockerfile                 → image Docker Python + frontend statique
   docker-compose.yml
 ```
 
@@ -56,50 +47,39 @@ par code SMS), c'est une étape supplémentaire, distincte de ce livrable.
 
 ## Lancer le projet en développement
 
-Deux terminaux :
-
 ```bash
-# Terminal 1 — backend (port 8080)
-cd backend
-mvn spring-boot:run
-
-# Terminal 2 — frontend (port 5173, avec rechargement à chaud)
-cd frontend
-npm install
-npm run dev
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r backend/requirements.txt
+python backend/app.py
 ```
 
-Ouvrez **http://localhost:5173** (site public) et **http://localhost:5173/admin.html** (organisateur).
-Vite proxifie automatiquement les appels `/api/...` vers le backend (voir `frontend/vite.config.js`).
+Ouvrez **http://localhost:8080** pour le site public et
+**http://localhost:8080/admin.html?key=baobab2026** pour l'espace organisateur.
 
-Clé admin par défaut en développement : `baobab2026` (définie dans `application.properties`).
+Clé admin par défaut en développement : `baobab2026`.
 
 ## Charger vos photos
 
-1. **Nominés** — éditez `frontend/src/data/categories.js` : chaque nominé a un
+1. **Nominés** — éditez `frontend/data/categories.js` : chaque nominé a un
    champ `photo`. Remplacez l'URL placeholder par la vôtre, par exemple :
    ```js
    { name: "Alphonse YAKPO", photo: "/photos/alphonse.jpg" }
    ```
-   Déposez vos fichiers dans `frontend/public/photos/` (créez le dossier) —
-   tout ce qui s'y trouve est servi tel quel par le site.
+   Déposez vos fichiers dans `frontend/photos/`.
 
-2. **Galerie** — éditez `frontend/src/data/gallery.js` (tableaux
-   `GALLERY_SLIDES` et `TIMELINE_ITEMS`), même principe.
+2. **Galerie** — éditez `frontend/data/gallery.js` (tableau `GALLERY_SLIDES`),
+   même principe.
 
-Après modification, relancez `npm run dev` (développement) ou reconstruisez
-l'image Docker (production) pour que les changements apparaissent.
+Après modification, redémarrez le backend Python : `python backend/app.py`.
 
 ## Build de production (sans Docker)
 
 ```bash
-cd frontend
-npm run build                       # génère frontend/dist
-cp -r dist/* ../backend/src/main/resources/static/
-
-cd ../backend
-mvn clean package -DskipTests       # génère backend/target/gala-backend.jar
-java -jar target/gala-backend.jar   # démarre sur http://localhost:8080
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r backend/requirements.txt
+python backend/app.py
 ```
 
 Le site public et l'espace organisateur sont alors servis sur le **même port** (8080).
@@ -119,7 +99,7 @@ Pour l'héberger en ligne : n'importe quelle plateforme qui exécute un
 `Dockerfile` fonctionne (Railway, Render, Fly.io, un VPS avec Docker…).
 
 **Railway** (le plus rapide) :
-1. Créez un projet, "Deploy from GitHub repo" (poussez `gala-fullstack/` sur GitHub).
+1. Créez un projet, "Deploy from GitHub repo".
 2. Railway détecte le `Dockerfile` automatiquement et build l'image.
 3. Onglet *Variables* : ajoutez `ADMIN_KEY` (valeur secrète) et `EVENT_DATE`.
 4. Onglet *Settings → Networking* : générez un domaine public. C'est prêt.
@@ -133,7 +113,6 @@ Pour l'héberger en ligne : n'importe quelle plateforme qui exécute un
 ### Option B — VPS classique (Ubuntu) avec Nginx + HTTPS
 
 ```bash
-# Sur le serveur :
 sudo apt update && sudo apt install -y docker.io docker-compose-plugin nginx certbot python3-certbot-nginx
 git clone <votre-dépôt> gala && cd gala
 docker compose up --build -d
@@ -170,10 +149,13 @@ un QR code affiché à l'entrée.
 - **Changez `ADMIN_KEY`** (variable d'environnement) — ne gardez jamais la
   valeur par défaut `baobab2026` en production.
 - Si le site est servi en HTTPS (fortement recommandé, cf. Certbot ci-dessus),
-  pensez à passer le cookie en `secure` : dans
-  `VoteController.java`, ajoutez `.secure(true)` à la construction du `ResponseCookie`.
-- Désactivez la console H2 en production (`H2_CONSOLE_ENABLED` doit rester à
-  `false`, sa valeur par défaut).
+  pensez à passer le cookie en `secure` : dans le backend Python, définissez
+  `secure=True` sur `response.set_cookie(...)`.
+
+Note technique : le serveur applique maintenant une règle supplémentaire
+pour empêcher le même appareil de voter deux fois dans une même catégorie.
+Si un second vote est détecté (par `cookie` ou par `fingerprint`), la
+requête est rejetée avec un code `409 Conflict` et un message clair.
 
 ## Proclamer les résultats le soir du Gala
 

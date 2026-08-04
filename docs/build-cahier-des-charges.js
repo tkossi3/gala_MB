@@ -103,7 +103,7 @@ const doc = new Document({
 
         labelValue("Client / Commanditaire", "Maison Baobab — Université de Lomé, Togo"),
         labelValue("Événement concerné", "Gala Annuel — Samedi 8 Août 2026, Université de Lomé"),
-        labelValue("Version du document", "2.0 — Refonte React / Spring Boot"),
+        labelValue("Version du document", "2.0 — Refonte vers frontend statique + backend Python"),
         labelValue("Statut", "Validé pour développement"),
 
         new Paragraph({ children: [new PageBreak()] }),
@@ -132,7 +132,7 @@ const doc = new Document({
         bullet("Export CSV de l'ensemble des votes (une ligne par vote), compatible Excel/Google Sheets/LibreOffice."),
 
         h1("3. Catalogue des catégories et nominés"),
-        p("Les catégories et nominés ci-dessous sont ceux de l'édition en cours ; ils sont modifiables dans le code source (frontend/src/data/categories.js et backend CategoryCatalog.java, qui doivent rester synchronisés)."),
+        p("Les catégories et nominés ci-dessous sont ceux de l'édition en cours ; ils sont modifiables dans le code source (frontend/data/categories.js et backend/app.py, qui doivent rester synchronisés)."),
         simpleTable(["Catégorie", "Nominé(e)s"], categories, [2600, 6800]),
 
         new Paragraph({ children: [new PageBreak()] }),
@@ -158,15 +158,15 @@ const doc = new Document({
 
         h1("5. Architecture technique"),
         h2("5.1 Frontend"),
-        bullet("Framework : React 18, outillé avec Vite."),
-        bullet("Deux points d'entrée buildés côte à côte : le site public (index.html) et l'espace organisateur (admin.html)."),
+        bullet("Architecture : pages statiques HTML/CSS/JavaScript, sans framework JS côté client."),
+        bullet("Deux points d'entrée : page publique (index.html) et espace organisateur (admin.html)."),
         bullet("Communication avec le backend en JSON via fetch, cookies inclus (same-origin)."),
         h2("5.2 Backend"),
-        bullet("Framework : Spring Boot 3 (Java 17), architecture en couches Controller / Service / Repository / Entité."),
-        bullet("Persistance : base H2 embarquée en mode fichier (aucune base de données externe à administrer)."),
+        bullet("Framework : Python Flask, API de vote + export CSV + service statique.") ,
+        bullet("Persistance : base SQLite embarquée en mode fichier (aucune base de données externe à administrer)."),
         bullet("API REST JSON, décrite en section 6."),
         h2("5.3 Déploiement"),
-        bullet("Image Docker unique : le build React est copié dans les ressources statiques de Spring Boot, qui sert le tout sur un seul port."),
+        bullet("Image Docker unique : backend Flask sert le frontend statique depuis le même conteneur."),
         bullet("Déploiement possible sur un service Cloud (Railway, Render, Fly.io), un VPS avec Docker + Nginx + HTTPS (Certbot), ou en local sur le réseau de la salle le soir de l'événement."),
 
         new Paragraph({ children: [new PageBreak()] }),
@@ -185,7 +185,7 @@ const doc = new Document({
         bullet("resultsPublic (booléen) — contrôle la visibilité publique des pourcentages"),
 
         h1("8. Livrables"),
-        bullet("Code source complet (frontend React + backend Spring Boot), avec README d'installation et de déploiement."),
+        bullet("Code source complet (frontend statique + backend Python), avec README d'installation et de déploiement."),
         bullet("Dockerfile et docker-compose.yml prêts à l'emploi."),
         bullet("Présent cahier des charges."),
 
