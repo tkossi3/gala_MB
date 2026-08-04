@@ -50,6 +50,10 @@ public class VoteService {
      * @param cookieVoterId identifiant issu du cookie (peut être null au premier vote)
      */
     public UpsertResult upsertVote(String cookieVoterId, String categoryId, String nominee, String fingerprint, String ip) {
+        categoryId = categoryId == null ? null : categoryId.strip();
+        nominee = nominee == null ? null : nominee.strip();
+        fingerprint = fingerprint == null ? null : fingerprint.strip();
+
         if (!catalog.isValidVote(categoryId, nominee)) {
             throw new IllegalArgumentException("Catégorie ou nominé invalide : " + categoryId + " / " + nominee);
         }

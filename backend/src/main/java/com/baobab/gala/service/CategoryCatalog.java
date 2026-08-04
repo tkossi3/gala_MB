@@ -20,7 +20,7 @@ public class CategoryCatalog {
         new CategoryDef("plus-drole", "Le plus drôle",
             List.of("Amorin YAKPO", "Nestor GAHOUZO", "Angelo GLODJO", "Béatrice ANANI")),
         new CategoryDef("plus-sociable", "Le plus sociable",
-            List.of("Christophe TAKOUBANA", "Boris DOMATINA", "Grâce GBATI", "Rebecca KPODOUH", "Carlos OLYMPIO", "Rita ")),
+            List.of("Christophe TAKOUBANA", "Boris DOMATINA", "Grâce GBATI", "Rebecca KPODOUH", "Carlos OLYMPIO", "Rita")),
         new CategoryDef("meilleur-sapeur", "Le meilleur Sapeur",
             List.of("Britney AGBOSSE", "Blessing GBEGLO", "Doogie AFFONFERE", "Christophe TAKOUBANA", "Aboudou ISSA", "Camelia LOWSON")),
         new CategoryDef("plus-dynamique", "Le plus dynamique",
@@ -42,6 +42,13 @@ public class CategoryCatalog {
 
     public boolean isValidVote(String categoryId, String nominee) {
         CategoryDef cat = byId.get(categoryId);
-        return cat != null && nominee != null && cat.nominees().contains(nominee);
+        String normalizedNominee = normalize(nominee);
+        return cat != null && normalizedNominee != null && cat.nominees().stream()
+            .map(CategoryCatalog::normalize)
+            .anyMatch(normalizedNominee::equals);
+    }
+
+    private static String normalize(String value) {
+        return value == null ? null : value.strip();
     }
 }

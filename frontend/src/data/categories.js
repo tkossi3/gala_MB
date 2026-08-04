@@ -32,7 +32,7 @@ export const CATEGORIES = [
       { name: "Grâce GBATI", photo: placeholder("plus-sociable-3") },
       { name: "Rebecca KPODOUH", photo: placeholder("plus-sociable-4") },
       { name: "Carlos OLYMPIO", photo: placeholder("plus-sociable-5") },
-      { name: "Rita ", photo: placeholder("plus-sociable-6") }
+      { name: "Rita", photo: placeholder("plus-sociable-6") }
     ]
   },
   {
