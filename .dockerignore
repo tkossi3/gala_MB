@@ -1,0 +1,19 @@
+# Exclude local virtual env and editor artifacts to keep Docker build context small
+.venv
+.env
+.vscode
+.git
+.github
+node_modules
+npm-debug.log
+.DS_Store
+
+# Documentation sources and large attachments not needed in container
+docs/
+cahier-des-charges-gala-baobab.docx
+
+# Local data and database
+backend/data/
+
+# Ignore dockerignore itself
+.dockerignore

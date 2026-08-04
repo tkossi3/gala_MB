@@ -98,6 +98,10 @@ Changez la clé admin dans `docker-compose.yml` (`ADMIN_KEY`) avant de lancer.
 Pour l'héberger en ligne : n'importe quelle plateforme qui exécute un
 `Dockerfile` fonctionne (Railway, Render, Fly.io, un VPS avec Docker…).
 
+Note importante : un fichier `.dockerignore` a été ajouté pour éviter d'envoyer
+les fichiers volumineux (ex. `.venv`, `docs/`, fichiers locaux) au daemon
+Docker — cela réduit fortement le temps et la taille du build.
+
 **Railway** (le plus rapide) :
 1. Créez un projet, "Deploy from GitHub repo".
 2. Railway détecte le `Dockerfile` automatiquement et build l'image.
@@ -164,5 +168,8 @@ requête est rejetée avec un code `409 Conflict` et un message clair.
    êtes prêts à révéler les pourcentages en direct sur grand écran.
 3. Cliquez sur **"Exporter les votes (CSV pour Excel)"** pour une trace
    complète, catégorie par catégorie, appareil par appareil.
+
+Ajout au calendrier : le bouton **"Ajouter à mon agenda"** ouvre maintenant
+Google Agenda pré-rempli (début 18:30, fin 22:00) pour ajouter l'événement.
 
 Bon Gala ✦

@@ -225,7 +225,7 @@ function createHeroSection(config) {
   hero.querySelector("#hero-vote-button").addEventListener("click", () => {
     document.getElementById("vote")?.scrollIntoView({ behavior: "smooth", block: "start" });
   });
-  hero.querySelector("#hero-calendar-button").addEventListener("click", downloadCalendarInvite);
+  hero.querySelector("#hero-calendar-button").addEventListener("click", openGoogleCalendar);
   hero.querySelector(".scroll-cue").addEventListener("click", () => {
     document.getElementById("about")?.scrollIntoView({ behavior: "smooth", block: "start" });
   });
@@ -233,39 +233,32 @@ function createHeroSection(config) {
   return hero;
 }
 
-function downloadCalendarInvite() {
+function parseISOLocal(iso) {
+  if (!iso) return null;
+  const m = iso.match(/(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})(?::(\d{2}))?/);
+  if (!m) return new Date(iso);
+  const year = Number(m[1]);
+  const month = Number(m[2]) - 1;
+  const day = Number(m[3]);
+  const hour = Number(m[4]);
+  const minute = Number(m[5]);
+  const second = Number(m[6] || 0);
+  return new Date(year, month, day, hour, minute, second);
+}
+
+function openGoogleCalendar() {
+  const startDate = parseISOLocal(EVENT_DATE) || new Date(EVENT_DATE);
+  if (!startDate || isNaN(startDate.getTime())) return alert("Date d'événement invalide.");
+  const start = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate(), 18, 30, 0);
+  const end = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate(), 22, 0, 0);
   const pad = (n) => String(n).padStart(2, "0");
-  const start = new Date(EVENT_DATE);
-  const end = new Date(start.getTime() + 5 * 60 * 60 * 1000);
   const fmt = (d) => `${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}T${pad(d.getHours())}${pad(d.getMinutes())}00`;
-  const stamp = fmt(new Date());
-
-  const ics = [
-    "BEGIN:VCALENDAR",
-    "VERSION:2.0",
-    "PRODID:-//Maison Baobab//Gala Annuel 2026//FR",
-    "CALSCALE:GREGORIAN",
-    "BEGIN:VEVENT",
-    `UID:gala-baobab-2026-${stamp}@maison-baobab`,
-    `DTSTAMP:${stamp}`,
-    `DTSTART:${fmt(start)}`,
-    `DTEND:${fmt(end)}`,
-    "SUMMARY:Gala Annuel Maison Baobab — Chic & Glamour",
-    "DESCRIPTION:Gala Annuel de la Maison Baobab. Remise des prix et soirée de gala.",
-    "LOCATION:Université de Lomé, Togo",
-    "END:VEVENT",
-    "END:VCALENDAR"
-  ].join("\r\n");
-
-  const blob = new Blob([ics], { type: "text/calendar;charset=utf-8" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "gala-baobab-2026.ics";
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  URL.revokeObjectURL(url);
+  const title = encodeURIComponent("Gala Annuel Maison Baobab — Chic & Glamour");
+  const details = encodeURIComponent("Remise des prix et soirée de gala.");
+  const location = encodeURIComponent("Université de Lomé, Togo");
+  const dates = `${fmt(start)}/${fmt(end)}`;
+  const url = `https://calendar.google.com/calendar/r/eventedit?text=${title}&dates=${dates}&details=${details}&location=${location}`;
+  window.open(url, "_blank");
 }
 
 function createAboutSection() {
@@ -410,7 +403,7 @@ function loadTheme() {
 }
 
 function useCountdown() {
-  const target = new Date(EVENT_DATE);
+  const target = parseISOLocal(EVENT_DATE) || new Date(EVENT_DATE);
   const now = new Date();
   const diff = Math.max(0, target - now);
   const seconds = Math.floor(diff / 1000);
@@ -771,6 +764,13 @@ function hydratePage() {
   Promise.all([fetchConfig(), fetchMyVotes(), fetchPublicResults()])
     .then(([config, mine, publicResults]) => {
       EVENT_DATE = config.eventDate || EVENT_DATE;
+      // If the reveal time (22:00 local) has passed on the event date, force
+      // results visible client-side as a fallback.
+      const eventDateObj = parseISOLocal(EVENT_DATE) || new Date(EVENT_DATE);
+      const revealAt = new Date(eventDateObj.getFullYear(), eventDateObj.getMonth(), eventDateObj.getDate(), 22, 0, 0);
+      if (new Date() >= revealAt) {
+        publicResults.resultsPublic = true;
+      }
       state.myVotes = mine.votes || {};
       state.results = publicResults;
       backendOffline = false;
@@ -783,6 +783,7 @@ function hydratePage() {
       renderVotes(state.myVotes, state.results);
     });
 
+  updateCountdown();
   setInterval(updateCountdown, 1000);
 }
 
