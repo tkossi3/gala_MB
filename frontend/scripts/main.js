@@ -11,10 +11,10 @@ const CATEGORIES = [
     icon: "🏆",
     description: "Celui ou celle qui a toujours le mot qui fait rire toute la promo.",
     nominees: [
-      { name: "Amorin YAKPO", photo: "/photos/galagallery1.jpg" },
-      { name: "Nestor GAHOUZO", photo: "/photos/galagallery2.jpg" },
-      { name: "Angelo GLODJO", photo: "/photos/galagallery3.jpg" },
-      { name: "Béatrice ANANI", photo: "/photos/galagallery4.jpg" }
+      { name: "Alphone HAGNABOE", photo: "/photos/Categorie/alphonse.png" },
+      { name: "Nestor GAHOUZO", photo: "/photos/Categorie/nestor.jpeg" },
+      { name: "Angelo GLODJO", photo: "/photos/Categorie/nestor.jpeg" },
+      { name: "Beatrice AMETODJI", photo: "/photos/Categorie/beatrice.png" }
     ]
   },
   {
@@ -23,12 +23,10 @@ const CATEGORIES = [
     icon: "🏆",
     description: "Toujours entouré·e, jamais avare d'un bonjour ou d'un service.",
     nominees: [
-      { name: "Christophe TAKOUBANA", photo: "/photos/galagallery5.jpg" },
-      { name: "Boris DOMATINA", photo: "/photos/galagallery6.jpg" },
-      { name: "Grâce GBATI", photo: "/photos/galagallery7.jpg" },
-      { name: "Rebecca KPODOUH", photo: "/photos/galagallery8.jpg" },
-      { name: "Carlos OLYMPIO", photo: "/photos/galagallery9.jpg" },
-      { name: "Rita", photo: "/photos/galagallery10.jpg" }
+      { name: "Domrix GNANSA", photo: "/photos/Categorie/domrix.png" },
+      { name: "Madelaine DOUTI", photo: "/photos/Categorie/madeleine.png" },
+      { name: "Rebecca KPODOUH", photo: "/photos/Categorie/rebecca.png" },
+      { name: "Rita ALOU", photo: "/photos/Categorie/rita.png" }
     ]
   },
   {
@@ -37,12 +35,10 @@ const CATEGORIES = [
     icon: "🏆",
     description: "L'élégance masculine (et féminine) de la promotion.",
     nominees: [
-      { name: "Britney AGBOSSE", photo: "/photos/galagallery11.jpg" },
-      { name: "Blessing GBEGLO", photo: "/photos/galagallery12.jpg" },
-      { name: "Doogie AFFONFERE", photo: "/photos/galagallery13.jpg" },
-      { name: "Christophe TAKOUBANA", photo: "/photos/galagallery14.jpg" },
-      { name: "Aboudou ISSA", photo: "/photos/galagallery15.jpg" },
-      { name: "Camelia LOWSON", photo: "/photos/galagallery16.jpg" }
+      { name: "Britney AGBOSSE", photo: "/photos/Categorie/britney.jpeg" },
+      { name: "Blessing GBEGLO", photo: "/photos/Categorie/blessing.jpeg" },
+      { name: "Doogie AFFONFERE", photo: "/photos/Categorie/bonaventure.png" },
+      { name: "Christophe TAKOUBANA", photo: "/photos/Categorie/christophe.png" }
     ]
   },
   {
@@ -51,13 +47,10 @@ const CATEGORIES = [
     icon: "🏆",
     description: "Une énergie qui ne s'éteint jamais, même en fin de semestre.",
     nominees: [
-      { name: "Boris DOMATINA", photo: "/photos/galagallery17.jpg" },
-      { name: "Kossivi Tinè KOSSI", photo: "/photos/galagallery18.jpg" },
-      { name: "Pamela HEGBE", photo: "/photos/galagallery19.jpg" },
-      { name: "Irène ADOKOU", photo: "/photos/galagallery20.jpg" },
-      { name: "AGBAGLA", photo: "/photos/galagallery21.jpg" },
-      { name: "Rebecca KPODOUH", photo: "/photos/galagallery22.jpg" },
-      { name: "Femme Alphonse", photo: "/photos/galagallery23.jpg" }
+      { name: "Pamela HEGBE", photo: "/photos/Categorie/pamela.png" },
+      { name: "Kossivi Tinè KOSSI", photo: "/photos/Categorie/tine.png" },
+      { name: "Irène ADOKOU", photo: "/photos/Categorie/irene.png" },
+      { name: "Déborah AGBAGLA", photo: "/photos/Categorie/deborah.png" }
     ]
   },
   {
@@ -66,46 +59,43 @@ const CATEGORIES = [
     icon: "🏆",
     description: "Discret·e, mais indispensable à l'équilibre du groupe.",
     nominees: [
-      { name: "Bonaventure AFFONFERE", photo: "/photos/galagallery24.jpg" },
-      { name: "Ebenezer HOUSSOU", photo: "/photos/galagallery25.jpg" },
-      { name: "Jean-Merc DOKITA", photo: "/photos/galagallery26.jpg" },
-      { name: "Daniel BOMBOMA", photo: "/photos/galagallery27.jpg" },
-      { name: "Bernice ANANI", photo: "/photos/galagallery28.jpg" },
-      { name: "Elvis", photo: "/photos/galagallery1.jpg" },
-      { name: "Julio", photo: "/photos/galagallery2.jpg" }
+      { name: "Julio ATTIDEKA", photo: "/photos/Categorie/julio.png" },
+      { name: "Jean-Merc DOKITA", photo: "/photos/Categorie/jean-marc.png" },
+      { name: "Daniel BOMBOMA", photo: "/photos/Categorie/daniel.png" },
+      { name: "Bernice ANANI", photo: "/photos/Categorie/bernice.png" }
     ]
   }
 ];
 
 const GALLERY_SLIDES = [
-  { id: 1, image: "/photos/galagallery1.jpg", caption: "Moments de soirée", layout: "featured" },
-  { id: 2, image: "/photos/galagallery2.jpg", caption: "Ambiance chic & glamour", layout: "tall" },
-  { id: 3, image: "/photos/galagallery3.jpg", caption: "Instantané du gala", layout: "wide" },
-  { id: 4, image: "/photos/galagallery4.jpg", caption: "Un instant magique", layout: "square" },
-  { id: 5, image: "/photos/galagallery5.jpg", caption: "Soirée inoubliable", layout: "tall" },
-  { id: 6, image: "/photos/galagallery6.jpg", caption: "Décor élégant", layout: "square" },
-  { id: 7, image: "/photos/galagallery7.jpg", caption: "Lumières de la soirée", layout: "wide" },
-  { id: 8, image: "/photos/galagallery8.jpg", caption: "Ambiance festive", layout: "square" },
-  { id: 9, image: "/photos/galagallery9.jpg", caption: "Moment en groupe", layout: "wide" },
-  { id: 10, image: "/photos/galagallery10.jpg", caption: "Entre amis", layout: "square" },
-  { id: 11, image: "/photos/galagallery11.jpg", caption: "Piste de danse", layout: "square" },
-  { id: 12, image: "/photos/galagallery12.jpg", caption: "La soirée continue", layout: "wide" },
-  { id: 13, image: "/photos/galagallery13.jpg", caption: "Beau moment", layout: "featured" },
-  { id: 14, image: "/photos/galagallery14.jpg", caption: "Élégance et style", layout: "tall" },
-  { id: 15, image: "/photos/galagallery15.jpg", caption: "Ambiance générale", layout: "wide" },
-  { id: 16, image: "/photos/galagallery16.jpg", caption: "Souvenir précieux", layout: "square" },
-  { id: 17, image: "/photos/galagallery17.jpg", caption: "Détail de décoration", layout: "tall" },
-  { id: 18, image: "/photos/galagallery18.jpg", caption: "Rayons de lumière", layout: "square" },
-  { id: 19, image: "/photos/galagallery19.jpg", caption: "Moment de joie", layout: "wide" },
-  { id: 20, image: "/photos/galagallery20.jpg", caption: "Convivialité", layout: "square" },
-  { id: 21, image: "/photos/galagallery21.jpg", caption: "Danse et musique", layout: "square" },
-  { id: 22, image: "/photos/galagallery22.jpg", caption: "Minuit au gala", layout: "wide" },
-  { id: 23, image: "/photos/galagallery23.jpg", caption: "Sourires de la nuit", layout: "featured" },
-  { id: 24, image: "/photos/galagallery24.jpg", caption: "Entre sérénité", layout: "tall" },
-  { id: 25, image: "/photos/galagallery25.jpg", caption: "Ambiance générale", layout: "wide" },
-  { id: 26, image: "/photos/galagallery26.jpg", caption: "Dernier cliché", layout: "square" },
-  { id: 27, image: "/photos/galagallery27.jpg", caption: "Mémoire de la soirée", layout: "tall" },
-  { id: 28, image: "/photos/galagallery28.jpg", caption: "Au revoir gala 2025", layout: "square" }
+  { id: 1, image: "/photos/Gallery/galagallery1.jpg", caption: "Moments de soirée", layout: "featured" },
+  { id: 2, image: "/photos/Gallery/galagallery2.jpg", caption: "Ambiance chic & glamour", layout: "tall" },
+  { id: 3, image: "/photos/Gallery/galagallery3.jpg", caption: "Instantané du gala", layout: "wide" },
+  { id: 4, image: "/photos/Gallery/galagallery4.jpg", caption: "Un instant magique", layout: "square" },
+  { id: 5, image: "/photos/Gallery/galagallery5.jpg", caption: "Soirée inoubliable", layout: "tall" },
+  { id: 6, image: "/photos/Gallery/galagallery6.jpg", caption: "Décor élégant", layout: "square" },
+  { id: 7, image: "/photos/Gallery/galagallery7.jpg", caption: "Lumières de la soirée", layout: "wide" },
+  { id: 8, image: "/photos/Gallery/galagallery8.jpg", caption: "Ambiance festive", layout: "square" },
+  { id: 9, image: "/photos/Gallery/galagallery9.jpg", caption: "Moment en groupe", layout: "wide" },
+  { id: 10, image: "/photos/Gallery/galagallery10.jpg", caption: "Entre amis", layout: "square" },
+  { id: 11, image: "/photos/Gallery/galagallery11.jpg", caption: "Piste de danse", layout: "square" },
+  { id: 12, image: "/photos/Gallery/galagallery12.jpg", caption: "La soirée continue", layout: "wide" },
+  { id: 13, image: "/photos/Gallery/galagallery13.jpg", caption: "Beau moment", layout: "featured" },
+  { id: 14, image: "/photos/Gallery/galagallery14.jpg", caption: "Élégance et style", layout: "tall" },
+  { id: 15, image: "/photos/Gallery/galagallery15.jpg", caption: "Ambiance générale", layout: "wide" },
+  { id: 16, image: "/photos/Gallery/galagallery16.jpg", caption: "Souvenir précieux", layout: "square" },
+  { id: 17, image: "/photos/Gallery/galagallery17.jpg", caption: "Détail de décoration", layout: "tall" },
+  { id: 18, image: "/photos/Gallery/galagallery18.jpg", caption: "Rayons de lumière", layout: "square" },
+  { id: 19, image: "/photos/Gallery/galagallery19.jpg", caption: "Moment de joie", layout: "wide" },
+  { id: 20, image: "/photos/Gallery/galagallery20.jpg", caption: "Convivialité", layout: "square" },
+  { id: 21, image: "/photos/Gallery/galagallery21.jpg", caption: "Danse et musique", layout: "square" },
+  { id: 22, image: "/photos/Gallery/galagallery22.jpg", caption: "Minuit au gala", layout: "wide" },
+  { id: 23, image: "/photos/Gallery/galagallery23.jpg", caption: "Sourires de la nuit", layout: "featured" },
+  { id: 24, image: "/photos/Gallery/galagallery24.jpg", caption: "Entre sérénité", layout: "tall" },
+  { id: 25, image: "/photos/Gallery/galagallery25.jpg", caption: "Ambiance générale", layout: "wide" },
+  { id: 26, image: "/photos/Gallery/galagallery26.jpg", caption: "Dernier cliché", layout: "square" },
+  { id: 27, image: "/photos/Gallery/galagallery27.jpg", caption: "Mémoire de la soirée", layout: "tall" },
+  { id: 28, image: "/photos/Gallery/galagallery28.jpg", caption: "Au revoir gala 2025", layout: "square" }
 ];
 
 function getFingerprint() {
