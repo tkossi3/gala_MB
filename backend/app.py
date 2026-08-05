@@ -30,7 +30,7 @@ CORS(
 CATEGORIES = [
     {
         "id": "plus-drole",
-        "title": "Le plus drôle",
+        "title": "Le(la) plus drôle",
         "nominees": [
             "Alphone HAGNABOE",
             "Nestor GAHOUZO",
@@ -40,17 +40,17 @@ CATEGORIES = [
     },
     {
         "id": "plus-sociable",
-        "title": "Le plus sociable",
+        "title": "Le(la) plus sociable",
         "nominees": [
             "Domrix GNANSA",
-            "Madelaine DOUTI",
+            "Irène ADOKOU",
             "Rebecca KPODOUH",
             "Rita ALOU"
         ]
     },
     {
         "id": "meilleur-sapeur",
-        "title": "Le meilleur Sapeur",
+        "title": "Le(la) meilleur Sapeur",
         "nominees": [
             "Britney AGBOSSE",
             "Blessing GBEGLO",
@@ -64,13 +64,13 @@ CATEGORIES = [
         "nominees": [
             "Pamela HEGBE",
             "Kossivi Tinè KOSSI",
-            "Irène ADOKOU",
+            "Madelaine DOUTI",
             "Déborah AGBAGLA"
         ]
     },
     {
         "id": "plus-humble",
-        "title": "Le plus Humble",
+        "title": "Le(la) plus Humble",
         "nominees": [
             "Julio ATTIDEKA",
             "Jean-Merc DOKITA",
