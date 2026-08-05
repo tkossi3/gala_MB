@@ -34,22 +34,20 @@ CATEGORIES = [
         "id": "plus-drole",
         "title": "Le plus drôle",
         "nominees": [
-            "Amorin YAKPO",
+            "Alphone HAGNABOE",
             "Nestor GAHOUZO",
             "Angelo GLODJO",
-            "Béatrice ANANI"
+            "Beatrice AMETODJI"
         ]
     },
     {
         "id": "plus-sociable",
         "title": "Le plus sociable",
         "nominees": [
-            "Christophe TAKOUBANA",
-            "Boris DOMATINA",
-            "Grâce GBATI",
+            "Domrix GNANSA",
+            "Madelaine DOUTI",
             "Rebecca KPODOUH",
-            "Carlos OLYMPIO",
-            "Rita"
+            "Rita ALOU"
         ]
     },
     {
@@ -59,35 +57,27 @@ CATEGORIES = [
             "Britney AGBOSSE",
             "Blessing GBEGLO",
             "Doogie AFFONFERE",
-            "Christophe TAKOUBANA",
-            "Aboudou ISSA",
-            "Camelia LOWSON"
+            "Christophe TAKOUBANA"
         ]
     },
     {
         "id": "plus-dynamique",
         "title": "Le plus dynamique",
         "nominees": [
-            "Boris DOMATINA",
-            "Kossivi Tinè KOSSI",
             "Pamela HEGBE",
+            "Kossivi Tinè KOSSI",
             "Irène ADOKOU",
-            "AGBAGLA",
-            "Rebecca KPODOUH",
-            "Femme Alphonse"
+            "Déborah AGBAGLA"
         ]
     },
     {
         "id": "plus-humble",
         "title": "Le plus Humble",
         "nominees": [
-            "Bonaventure AFFONFERE",
-            "Ebenezer HOUSSOU",
+            "Julio ATTIDEKA",
             "Jean-Merc DOKITA",
             "Daniel BOMBOMA",
-            "Bernice ANANI",
-            "Elvis",
-            "Julio"
+            "Bernice ANANI"
         ]
     }
 ]

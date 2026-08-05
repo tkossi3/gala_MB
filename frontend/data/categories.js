@@ -5,10 +5,10 @@ const categories = [
     icon: "🏆",
     description: "Celui ou celle qui a toujours le mot qui fait rire toute la promo.",
     nominees: [
-      { name: "Amorin YAKPO", photo: "/photos/galagallery1.jpg" },
-      { name: "Nestor GAHOUZO", photo: "/photos/galagallery2.jpg" },
-      { name: "Angelo GLODJO", photo: "/photos/galagallery3.jpg" },
-      { name: "Béatrice ANANI", photo: "/photos/galagallery4.jpg" }
+      { name: "Alphone HAGNABOE", photo: "/frontend/photos/Categorie/alphonse.png" },
+      { name: "Nestor GAHOUZO", photo: "/frontend/photos/Categorie/nestor.jpeg" },
+      { name: "Angelo GLODJO", photo: "/frontend/photos/Categorie/nestor.jpeg" },
+      { name: "Beatrice AMETODJI", photo: "/frontend/photos/Categorie/beatrice1.png" }
     ]
   },
   {
@@ -17,12 +17,10 @@ const categories = [
     icon: "🏆",
     description: "Toujours entouré·e, jamais avare d'un bonjour ou d'un service.",
     nominees: [
-      { name: "Christophe TAKOUBANA", photo: "/photos/galagallery5.jpg" },
-      { name: "Boris DOMATINA", photo: "/photos/galagallery6.jpg" },
-      { name: "Grâce GBATI", photo: "/photos/galagallery7.jpg" },
-      { name: "Rebecca KPODOUH", photo: "/photos/galagallery8.jpg" },
-      { name: "Carlos OLYMPIO", photo: "/photos/galagallery9.jpg" },
-      { name: "Rita", photo: "/photos/galagallery10.jpg" }
+      { name: "Domrix GNANSA", photo: "/frontend/photos/Categorie/domrix.png" },
+      { name: "Madelaine DOUTI", photo: "/frontend/photos/Categorie/madeleine.png" },
+      { name: "Rebecca KPODOUH", photo: "/frontend/photos/Categorie/rebecca.png" },
+      { name: "Rita ALOU", photo: "/frontend/photos/Categorie/rita.png" }
     ]
   },
   {
@@ -31,12 +29,10 @@ const categories = [
     icon: "🏆",
     description: "L'élégance masculine (et féminine) de la promotion.",
     nominees: [
-      { name: "Britney AGBOSSE", photo: "/photos/galagallery11.jpg" },
-      { name: "Blessing GBEGLO", photo: "/photos/galagallery12.jpg" },
-      { name: "Doogie AFFONFERE", photo: "/photos/galagallery13.jpg" },
-      { name: "Christophe TAKOUBANA", photo: "/photos/galagallery14.jpg" },
-      { name: "Aboudou ISSA", photo: "/photos/galagallery15.jpg" },
-      { name: "Camelia LOWSON", photo: "/photos/galagallery16.jpg" }
+      { name: "Britney AGBOSSE", photo: "/frontend/photos/Categorie/britney.jpeg" },
+      { name: "Blessing GBEGLO", photo: "/frontend/photos/Categorie/blessing.jpeg" },
+      { name: "Doogie AFFONFERE", photo: "/frontend/photos/Categorie//bonaventure.png" },
+      { name: "Christophe TAKOUBANA", photo: "/frontend/photos/Categorie/christophe.png" }
     ]
   },
   {
@@ -45,13 +41,10 @@ const categories = [
     icon: "🏆",
     description: "Une énergie qui ne s'éteint jamais, même en fin de semestre.",
     nominees: [
-      { name: "Boris DOMATINA", photo: "/photos/galagallery17.jpg" },
-      { name: "Kossivi Tinè KOSSI", photo: "/photos/galagallery18.jpg" },
-      { name: "Pamela HEGBE", photo: "/photos/galagallery19.jpg" },
-      { name: "Irène ADOKOU", photo: "/photos/galagallery20.jpg" },
-      { name: "AGBAGLA", photo: "/photos/galagallery21.jpg" },
-      { name: "Rebecca KPODOUH", photo: "/photos/galagallery22.jpg" },
-      { name: "Femme Alphonse", photo: "/photos/galagallery23.jpg" }
+      { name: "Pamela HEGBE", photo: "/frontend/photos/Categorie/pamela.png" },
+      { name: "Kossivi Tinè KOSSI", photo: "/frontend/photos/Categorie/tine.png" },
+      { name: "Irène ADOKOU", photo: "/frontend/photos/Categorie/irene.png" },
+      { name: "Déborah AGBAGLA", photo: "/frontend/photos/Categorie/deborah.png" }
     ]
   },
   {
@@ -60,13 +53,10 @@ const categories = [
     icon: "🏆",
     description: "Discret·e, mais indispensable à l'équilibre du groupe.",
     nominees: [
-      { name: "Bonaventure AFFONFERE", photo: "/photos/galagallery24.jpg" },
-      { name: "Ebenezer HOUSSOU", photo: "/photos/galagallery25.jpg" },
-      { name: "Jean-Merc DOKITA", photo: "/photos/galagallery26.jpg" },
-      { name: "Daniel BOMBOMA", photo: "/photos/galagallery27.jpg" },
-      { name: "Bernice ANANI", photo: "/photos/galagallery28.jpg" },
-      { name: "Elvis", photo: "/photos/galagallery1.jpg" },
-      { name: "Julio", photo: "/photos/galagallery2.jpg" }
+      { name: "Julio ATTIDEKA", photo: "/frontend/photos/Categorie/rebecca.png" },
+      { name: "Jean-Merc DOKITA", photo: "/frontend/photos/Categorie/jean-marc.png" },
+      { name: "Daniel BOMBOMA", photo: "/frontend/photos/Categorie/daniel.png" },
+      { name: "Bernice ANANI", photo: "/frontend/photos/Categorie/bernice.png" }
     ]
   }
 ];
