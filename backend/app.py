@@ -3,6 +3,7 @@ import sqlite3
 import uuid
 from datetime import datetime, timedelta
 from flask import Flask, abort, g, jsonify, make_response, request, send_from_directory
+from flask_cors import CORS
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 DATA_DIR = os.path.join(BASE_DIR, "data")
@@ -13,6 +14,20 @@ EVENT_DATE = os.getenv("EVENT_DATE", "2026-08-08T18:00:00")
 ADMIN_KEY = os.getenv("ADMIN_KEY", "baobab2026")
 
 app = Flask(__name__, static_folder=None)
+CORS(
+    app,
+    resources={r"/api/*": {"origins": [
+        "https://gala-mb.vercel.app",
+        "https://www.gala-mb.vercel.app",
+        "http://localhost:5500",
+        "http://127.0.0.1:5500",
+        "http://localhost:8080",
+        "http://127.0.0.1:8080"
+    ]}},
+    supports_credentials=True,
+    allow_headers=["Content-Type"],
+    methods=["GET", "POST", "OPTIONS"]
+)
 
 CATEGORIES = [
     {
@@ -282,12 +297,14 @@ def vote():
 
     response = make_response(jsonify({"success": True, "isUpdate": is_update, "voterId": voter_id}))
     max_age = 400 * 24 * 60 * 60
+    secure_cookie = request.headers.get("X-Forwarded-Proto", "http") == "https" or request.is_secure
     response.set_cookie(
         COOKIE_NAME,
         voter_id,
         max_age=max_age,
         httponly=True,
-        samesite="Lax",
+        samesite="None",
+        secure=secure_cookie,
         path="/"
     )
     return response

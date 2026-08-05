@@ -1,5 +1,9 @@
 let EVENT_DATE = "2026-08-08T18:00:00";
 
+const API_BASE_URL = window.GALA_API_BASE_URL || (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
+  ? "http://localhost:8080"
+  : "https://galamb-production.up.railway.app");
+
 const CATEGORIES = [
   {
     id: "plus-drole",
@@ -148,7 +152,8 @@ function getCanvasSignature() {
 }
 
 function apiFetch(path, options = {}) {
-  return fetch(path, { credentials: "same-origin", ...options }).then(async (res) => {
+  const url = path.startsWith("http") ? path : `${API_BASE_URL}${path}`;
+  return fetch(url, { credentials: "include", ...options }).then(async (res) => {
     const contentType = res.headers.get("content-type") || "";
     const body = contentType.includes("application/json") ? await res.json() : await res.text();
     if (!res.ok) {
