@@ -62,11 +62,11 @@ function simpleTable(headerRow, rows, columnWidths) {
 }
 
 const categories = [
-  ["Le plus drôle", "Alphonse YAKPO, Madelaine GAHOUZO, GRODTO, Béatrice"],
-  ["Le plus sociable", "Christophe, Domatina, GBATI Grâce, Rebecca KPO, Carlos, Rita"],
-  ["Le meilleur Sapeur", "Britney, Blessing, Doogie, Christophe, Aboudou, Camelia"],
-  ["Le plus dynamique", "Domatina, Tinès, Pamela, ADOKOU, AGBAGLA, KPODOUH, Femme Alphonse"],
-  ["Le plus Humble", "Bonaventure, Ebenezer, Dokita JM, Daniel, Bernice, Elvis, Julio"]
+  ["Le(la) plus drole", "Alphonse YAKPO, Madelaine GAHOUZO, GRODTO, Béatrice"],
+  ["Le(la) plus sociable", "Christophe, Domatina, GBATI Grâce, Rebecca KPO, Carlos, Rita"],
+  ["Le(la) meilleur Sapeur(se)", "Britney, Blessing, Doogie, Christophe, Aboudou, Camelia"],
+  ["Le(la) plus dynamique", "Domatina, Tinès, Pamela, ADOKOU, AGBAGLA, KPODOUH, Femme Alphonse"],
+  ["Le(la) plus Humble", "Bonaventure, Ebenezer, Dokita JM, Daniel, Bernice, Elvis, Julio"]
 ];
 
 const apiEndpoints = [
