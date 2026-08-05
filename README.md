@@ -1,7 +1,7 @@
 # Gala Annuel Maison Baobab — Frontend statique + backend Python
 
 Site événementiel "Chic & Glamour" : vote par catégorie avec anti-doublon,
-galerie photo, agenda, thème clair/sombre, espace organisateur avec résultats
+galerie photo, thème clair/sombre, espace organisateur avec résultats
 en direct et export CSV.
 
 ## Architecture
@@ -168,8 +168,5 @@ requête est rejetée avec un code `409 Conflict` et un message clair.
    êtes prêts à révéler les pourcentages en direct sur grand écran.
 3. Cliquez sur **"Exporter les votes (CSV pour Excel)"** pour une trace
    complète, catégorie par catégorie, appareil par appareil.
-
-Ajout au calendrier : le bouton **"Ajouter à mon agenda"** ouvre maintenant
-Google Agenda pré-rempli (début 18:30, fin 22:00) pour ajouter l'événement.
 
 Bon Gala ✦

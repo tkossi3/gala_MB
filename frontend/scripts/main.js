@@ -214,18 +214,16 @@ function createHeroSection(config) {
       </div>
       <div class="hero-actions">
         <button class="btn-gold btn-large" type="button" id="hero-vote-button">Voter maintenant</button>
-        <button class="btn-ghost" type="button" id="hero-calendar-button">📅 Ajouter à mon agenda</button>
       </div>
+      <button class="scroll-cue" type="button" aria-label="Voir la section événement">
+        <span class="scroll-cue-line"></span>
+      </button>
     </div>
-    <button class="scroll-cue" type="button" aria-label="Défiler vers le bas">
-      <span class="scroll-cue-line"></span>
-    </button>
   `;
 
   hero.querySelector("#hero-vote-button").addEventListener("click", () => {
     document.getElementById("vote")?.scrollIntoView({ behavior: "smooth", block: "start" });
   });
-  hero.querySelector("#hero-calendar-button").addEventListener("click", openGoogleCalendar);
   hero.querySelector(".scroll-cue").addEventListener("click", () => {
     document.getElementById("about")?.scrollIntoView({ behavior: "smooth", block: "start" });
   });
@@ -246,20 +244,6 @@ function parseISOLocal(iso) {
   return new Date(year, month, day, hour, minute, second);
 }
 
-function openGoogleCalendar() {
-  const startDate = parseISOLocal(EVENT_DATE) || new Date(EVENT_DATE);
-  if (!startDate || isNaN(startDate.getTime())) return alert("Date d'événement invalide.");
-  const start = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate(), 18, 30, 0);
-  const end = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate(), 22, 0, 0);
-  const pad = (n) => String(n).padStart(2, "0");
-  const fmt = (d) => `${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}T${pad(d.getHours())}${pad(d.getMinutes())}00`;
-  const title = encodeURIComponent("Gala Annuel Maison Baobab — Chic & Glamour");
-  const details = encodeURIComponent("Remise des prix et soirée de gala.");
-  const location = encodeURIComponent("Université de Lomé, Togo");
-  const dates = `${fmt(start)}/${fmt(end)}`;
-  const url = `https://calendar.google.com/calendar/r/eventedit?text=${title}&dates=${dates}&details=${details}&location=${location}`;
-  window.open(url, "_blank");
-}
 
 function createAboutSection() {
   const section = document.createElement("section");
@@ -299,7 +283,10 @@ function createGallerySection() {
     const button = document.createElement("button");
     button.type = "button";
     button.className = `gallery-tile ${slide.layout === "featured" ? "is-featured" : slide.layout === "wide" ? "is-wide" : slide.layout === "tall" ? "is-tall" : ""}`.trim();
-    button.innerHTML = `<img src="${slide.image}" alt="${slide.caption}" loading="lazy">`;
+    const frame = document.createElement("div");
+    frame.className = "gallery-tile-inner";
+    frame.innerHTML = `<img src="${slide.image}" alt="${slide.caption}" loading="lazy">`;
+    button.appendChild(frame);
     button.addEventListener("click", () => openLightbox(slide));
     grid.appendChild(button);
   });
@@ -405,7 +392,10 @@ function loadTheme() {
 function useCountdown() {
   const target = parseISOLocal(EVENT_DATE) || new Date(EVENT_DATE);
   const now = new Date();
-  const diff = Math.max(0, target - now);
+  if (!target || isNaN(target.getTime())) {
+    return { days: 0, hours: 0, minutes: 0, seconds: 0 };
+  }
+  const diff = Math.max(0, target.getTime() - now.getTime());
   const seconds = Math.floor(diff / 1000);
   return {
     days: Math.floor(seconds / 86400),
