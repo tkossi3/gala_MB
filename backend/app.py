@@ -42,7 +42,7 @@ CATEGORIES = [
         "id": "plus-sociable",
         "title": "Le(la) plus sociable",
         "nominees": [
-            "Domrix GNANSA",
+            "Boris GNANSA",
             "Irène ADOKOU",
             "Rebecca KPODOUH",
             "Rita ALOU"
@@ -54,7 +54,7 @@ CATEGORIES = [
         "nominees": [
             "Britney AGBOSSE",
             "Blessing GBEGLO",
-            "Doogie AFFONFERE",
+            "Doogie Bonaventure AFFONFERE",
             "Christophe TAKOUBANA"
         ]
     },
@@ -75,7 +75,8 @@ CATEGORIES = [
             "Julio ATTIDEKA",
             "Jean-Merc DOKITA",
             "Daniel BOMBOMA",
-            "Bernice ANANI"
+            "Bernice ANANI",
+            "Ebenezer HOUSSOU"
         ]
     }
 ]

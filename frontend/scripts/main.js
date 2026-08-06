@@ -1,4 +1,4 @@
-let EVENT_DATE = "2026-08-08T18:00:00";
+let EVENT_DATE = "2026-08-09T19:00:00";
 
 const API_BASE_URL = window.GALA_API_BASE_URL || (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
   ? "http://localhost:8080"
@@ -13,7 +13,7 @@ const CATEGORIES = [
     nominees: [
       { name: "Alphone HAGNABOE", photo: "/photos/Categorie/alphonse.png" },
       { name: "Nestor GAHOUZO", photo: "/photos/Categorie/nestor.jpeg" },
-      { name: "Angelo GLODJO", photo: "/photos/Categorie/Angelo.jpeg" },
+      { name: "Angelo GLODJO", photo: "/photos/Categorie/angelo.png" },
       { name: "Beatrice AMETODJI", photo: "/photos/Categorie/beatrice.png" }
     ]
   },
@@ -23,7 +23,7 @@ const CATEGORIES = [
     icon: "🏆",
     description: "Toujours entouré·e et communiquant bien avec tous le monde.",
     nominees: [
-      { name: "Domrix GNANSA", photo: "/photos/Categorie/domrix.png" },
+      { name: "Boris GNANSA", photo: "/photos/Categorie/domrix.png" },
       { name: "Irène ADOKOU", photo: "/photos/Categorie/irene.png" },
       { name: "Rebecca KPODOUH", photo: "/photos/Categorie/rebecca.png" },
       { name: "Rita ALOU", photo: "/photos/Categorie/rita.png" }
@@ -35,9 +35,9 @@ const CATEGORIES = [
     icon: "🏆",
     description: "L'élégance masculine (et féminine) de la promotion.",
     nominees: [
-      { name: "Britney AGBOSSE", photo: "/photos/Categorie/britney.jpeg" },
+      { name: "Britney AGBOSSE", photo: "/photos/Categorie/britney.png" },
       { name: "Blessing GBEGLO", photo: "/photos/Categorie/blessing.jpeg" },
-      { name: "Doogie AFFONFERE", photo: "/photos/Categorie/bonaventure.png" },
+      { name: "Doogie Bonaventure AFFONFERE", photo: "/photos/Categorie/bonaventure.png" },
       { name: "Christophe TAKOUBANA", photo: "/photos/Categorie/christophe.png" }
     ]
   },
@@ -63,7 +63,7 @@ const CATEGORIES = [
       { name: "Bernice ANANI", photo: "/photos/Categorie/bernice.png" },
       { name: "Jean-Merc DOKITA", photo: "/photos/Categorie/jean-marc.png" },
       { name: "Daniel BOMBOMA", photo: "/photos/Categorie/daniel.png" },
-      { name: "EBenezer HOUSSOU", photo: "/photos/Categorie/ebenezer.png" }
+      { name: "Ebenezer HOUSSOU", photo: "/photos/Categorie/ebenezer.png" }
     ]
   }
 ];
@@ -198,7 +198,7 @@ function createHeroSection(config) {
         Gala&nbsp;Annuel
         <span class="hero-title-accent">Chic&nbsp;&amp;&nbsp;Glamour</span>
       </h1>
-      <p class="hero-sub">Samedi 8 Août 2026 · Université de Lomé</p>
+      <p class="hero-sub">Dimanche 9 Août 2026 · Hotel le Morphée, Totsi, Lomé, TOGO</p>
       <div class="countdown" role="timer" aria-live="off">
         <div class="cd-unit"><span class="cd-value" id="countdown-days">00</span><span class="cd-label">Jours</span></div>
         <div class="cd-sep">:</div>
@@ -249,11 +249,13 @@ function createAboutSection() {
     <div class="section-inner">
       <p class="section-eyebrow reveal">01 — L'événement</p>
       <h2 class="section-title reveal">Une nuit taillée pour l'excellence</h2>
-      <p class="about-text reveal">La Maison Baobab célèbre une nouvelle année d'unité, d'élégance et de mémoire. Le temps d'une soirée, l'Université de Lomé se pare d'or pour récompenser les personnalités qui ont marqué la promotion. Habillez-vous, votez, et soyez présents pour la remise des prix.</p>
+      <p class="about-text reveal">La Maison Baobab célèbre une nouvelle année d'unité, d'élégance et de mémoire. Le temps d'une soirée, elle se pare d'or pour récompenser les personnalités qui ont marqué l'année'.</p>
       <div class="about-grid">
-        <div class="about-card reveal"><span class="about-card-icon">◆</span><h3>Date</h3><p>Samedi 8 Août 2026</p></div>
-        <div class="about-card reveal"><span class="about-card-icon">◆</span><h3>Lieu</h3><p>Université de Lomé, Togo</p></div>
+        <div class="about-card reveal"><span class="about-card-icon">◆</span><h3>Date</h3><p>Dimanche 9 Août 2026</p></div>
+        <div class="about-card reveal"><span class="about-card-icon">◆</span><h3>Heure</h3><p>19:00 GMT</p></div>
+        <div class="about-card reveal"><span class="about-card-icon">◆</span><h3>Lieu</h3><p>Hotel le Morphée, Totsi, Lomé, TOGO</p></div>
         <div class="about-card reveal"><span class="about-card-icon">◆</span><h3>Thème</h3><p>Chic &amp; Glamour</p></div>
+        <div class="about-card reveal"><span class="about-card-icon">◆</span><h3>Ambiance</h3><p>DJ TOXIQ</p></div>
         <div class="about-card reveal"><span class="about-card-icon">◆</span><h3>Catégories</h3><p>5 titres à décerner</p></div>
       </div>
     </div>
@@ -337,8 +339,9 @@ function createFooter() {
   footer.className = "site-footer";
   footer.innerHTML = `
     <div class="section-inner footer-inner">
+      <span class="brand-mark"><img src="/photos/mb-logo.png" alt="Logo Maison Baobab" class="brand-logo"></span>
       <p class="brand-text footer-brand">Maison <em>Baobab</em></p>
-      <p class="footer-copy">Gala Annuel — Chic &amp; Glamour · 8 Août 2026 · Université de Lomé, Togo</p>
+      <p class="footer-copy">Gala Annuel — Chic &amp; Glamour · 9 Août 2026 · Hotel le Morphée, Totsi, Lomé-Togo</p>
     </div>
   `;
   return footer;
@@ -350,7 +353,7 @@ function createHeader() {
   header.innerHTML = `
     <div class="header-inner">
       <a href="#hero" class="brand">
-        <span class="brand-mark">MB</span>
+        <span class="brand-mark"><img src="/photos/mb-logo.png" alt="Logo Maison Baobab" class="brand-logo"></span>
         <span class="brand-text">Maison <em>Baobab</em></span>
       </a>
       <nav class="site-nav" aria-label="Navigation principale">
@@ -750,13 +753,6 @@ function hydratePage() {
   Promise.all([fetchConfig(), fetchMyVotes(), fetchPublicResults()])
     .then(([config, mine, publicResults]) => {
       EVENT_DATE = config.eventDate || EVENT_DATE;
-      // If the reveal time (22:00 local) has passed on the event date, force
-      // results visible client-side as a fallback.
-      const eventDateObj = parseISOLocal(EVENT_DATE) || new Date(EVENT_DATE);
-      const revealAt = new Date(eventDateObj.getFullYear(), eventDateObj.getMonth(), eventDateObj.getDate(), 22, 0, 0);
-      if (new Date() >= revealAt) {
-        publicResults.resultsPublic = true;
-      }
       state.myVotes = mine.votes || {};
       state.results = publicResults;
       backendOffline = false;

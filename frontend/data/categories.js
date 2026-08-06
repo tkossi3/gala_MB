@@ -8,7 +8,7 @@ const categories = [
     nominees: [
       { name: "Alphone HAGNABOE", photo: "/photos/Categorie/alphonse.png" },
       { name: "Nestor GAHOUZO", photo: "/photos/Categorie/nestor.jpeg" },
-      { name: "Angelo GLODJO", photo: "/photos/Categorie/Angelo.jpeg" },
+      { name: "Angelo GLODJO", photo: "/photos/Categorie/angelo.png" },
       { name: "Beatrice AMETODJI", photo: "/photos/Categorie/beatrice.png" }
     ]
   },
@@ -18,7 +18,7 @@ const categories = [
     icon: "🏆",
     description: "Toujours entouré·e et communiquant bien avec tous le monde.",
     nominees: [
-      { name: "Domrix GNANSA", photo: "/photos/Categorie/domrix.png" },
+      { name: "Boris GNANSA", photo: "/photos/Categorie/domrix.png" },
       { name: "Irène ADOKOU", photo: "/photos/Categorie/irene.png" },
       { name: "Rebecca KPODOUH", photo: "/photos/Categorie/rebecca.png" },
       { name: "Rita ALOU", photo: "/photos/Categorie/rita.png" }
@@ -30,9 +30,9 @@ const categories = [
     icon: "🏆",
     description: "L'élégance masculine (et féminine) de la promotion.",
     nominees: [
-      { name: "Britney AGBOSSE", photo: "/photos/Categorie/britney.jpeg" },
+      { name: "Britney AGBOSSE", photo: "/photos/Categorie/britney.png" },
       { name: "Blessing GBEGLO", photo: "/photos/Categorie/blessing.jpeg" },
-      { name: "Doogie AFFONFERE", photo: "/photos/Categorie/bonaventure.png" },
+      { name: "Doogie Bonaventure AFFONFERE", photo: "/photos/Categorie/bonaventure.png" },
       { name: "Christophe TAKOUBANA", photo: "/photos/Categorie/christophe.png" }
     ]
   },
@@ -58,7 +58,7 @@ const categories = [
       { name: "Jean-Merc DOKITA", photo: "/photos/Categorie/jean-marc.png" },
       { name: "Daniel BOMBOMA", photo: "/photos/Categorie/daniel.png" },
       { name: "Bernice ANANI", photo: "/photos/Categorie/bernice.png" },
-      { name: "EBenezer HOUSSOU", photo: "/photos/Categorie/ebenezer.png" }
+      { name: "Ebenezer HOUSSOU", photo: "/photos/Categorie/ebenezer.png" }
     ]
   }
 ];

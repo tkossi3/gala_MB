@@ -10,7 +10,7 @@ services:
     environment:
       # ⚠️ Changez cette clé avant le jour du Gala.
       ADMIN_KEY: "baobab2026"
-      EVENT_DATE: "2026-08-08T18:00:00"
+      EVENT_DATE: "2026-08-09T19:00:00"
     volumes:
       # Persiste la base de votes même si le conteneur est recréé.
       - gala-data:/app/backend/data
