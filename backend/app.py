@@ -32,7 +32,7 @@ CATEGORIES = [
         "id": "plus-drole",
         "title": "Le(la) plus drôle",
         "nominees": [
-            "Alphone HAGNABOE",
+            "Alphonse HAGNABOE",
             "Nestor GAHOUZO",
             "Angelo GLODJO",
             "Beatrice AMETODJI"
@@ -73,7 +73,7 @@ CATEGORIES = [
         "title": "Le(la) plus Humble",
         "nominees": [
             "Julio ATTIDEKA",
-            "Jean-Merc DOKITA",
+            "Jean-Marc DOKITA",
             "Daniel BOMBOMA",
             "Bernice ANANI",
             "Ebenezer HOUSSOU"
@@ -104,7 +104,7 @@ def create_tables(conn):
             first_voted_at TEXT NOT NULL,
             updated_at TEXT NOT NULL,
             ip TEXT,
-            UNIQUE(voter_id, category_id)
+            UNIQUE(voter_id, category_id, nominee)
         )
         """
     )
@@ -120,7 +120,7 @@ def create_tables(conn):
     # Ensure an index to prevent the same fingerprint from voting multiple
     # times for the same category. NULL fingerprints are allowed.
     conn.execute(
-        "CREATE UNIQUE INDEX IF NOT EXISTS ux_votes_fingerprint_category ON votes(fingerprint, category_id)"
+        "CREATE UNIQUE INDEX IF NOT EXISTS ux_votes_fingerprint_category ON votes(fingerprint, category_id, nominee)"
     )
     conn.commit()
 
@@ -192,7 +192,10 @@ def get_voter_id(cookie_voter_id, fingerprint):
 
 
 def map_votes(rows):
-    return {row["category_id"]: row["nominee"] for row in rows}
+    votes = {}
+    for row in rows:
+        votes.setdefault(row["category_id"], []).append(row["nominee"])
+    return votes
 
 
 def compute_results(include_counts):
@@ -261,30 +264,34 @@ def vote():
     voter_id = get_voter_id(request.cookies.get(COOKIE_NAME), fingerprint)
     now = datetime.utcnow().isoformat()
     db = get_db()
-    existing = db.execute(
-        "SELECT id FROM votes WHERE voter_id = ? AND category_id = ?",
+
+    # Récupérer les votes actuels dans cette catégorie
+    current_votes = db.execute(
+        "SELECT id, nominee FROM votes WHERE voter_id = ? AND category_id = ?",
         (voter_id, category_id)
-    ).fetchone()
-    is_update = bool(existing)
+    ).fetchall()
+    
+    current_nominees = [r["nominee"] for r in current_votes]
 
-    if is_update:
+    # 1. Bloquer si déjà voté pour ce candidat spécifique
+    if nominee in current_nominees:
+        return jsonify({"error": "Vous avez déjà voté pour ce candidat."}), 400
+
+    # 2. Bloquer si la limite de 2 votes est atteinte
+    if len(current_nominees) >= 2:
+        return jsonify({"error": "Vous avez déjà utilisé vos 2 votes dans cette catégorie."}), 400
+
+    # 3. Enregistrer le vote
+    try:
         db.execute(
-            "UPDATE votes SET nominee = ?, fingerprint = ?, updated_at = ?, ip = ? WHERE id = ?",
-            (nominee, fingerprint, now, request.remote_addr, existing["id"])
+            "INSERT INTO votes (voter_id, category_id, nominee, fingerprint, first_voted_at, updated_at, ip) VALUES (?, ?, ?, ?, ?, ?, ?)",
+            (voter_id, category_id, nominee, fingerprint, now, now, request.remote_addr)
         )
-    else:
-        try:
-            db.execute(
-                "INSERT INTO votes (voter_id, category_id, nominee, fingerprint, first_voted_at, updated_at, ip) VALUES (?, ?, ?, ?, ?, ?, ?)",
-                (voter_id, category_id, nominee, fingerprint, now, now, request.remote_addr)
-            )
-        except sqlite3.IntegrityError:
-            # This happens if the fingerprint (or other unique constraint)
-            # indicates the device has already voted for this category.
-            return jsonify({"error": "Cet appareil a déjà voté pour cette catégorie."}), 409
-    db.commit()
+        db.commit()
+    except sqlite3.IntegrityError:
+        return jsonify({"error": "Cet appareil a déjà voté pour ce candidat."}), 409
 
-    response = make_response(jsonify({"success": True, "isUpdate": is_update, "voterId": voter_id}))
+    response = make_response(jsonify({"success": True, "voterId": voter_id}))
     max_age = 400 * 24 * 60 * 60
     secure_cookie = request.headers.get("X-Forwarded-Proto", "http") == "https" or request.is_secure
     response.set_cookie(

@@ -11,7 +11,7 @@ const CATEGORIES = [
     icon: "🏆",
     description: "Celui ou celle qui a toujours le mot qui fait rire les étudiants de la maison.",
     nominees: [
-      { name: "Alphone HAGNABOE", photo: "/photos/Categorie/alphonse.png" },
+      { name: "Alphonse HAGNABOE", photo: "/photos/Categorie/alphonse.png" },
       { name: "Nestor GAHOUZO", photo: "/photos/Categorie/nestor.jpeg" },
       { name: "Angelo GLODJO", photo: "/photos/Categorie/angelo.png" },
       { name: "Beatrice AMETODJI", photo: "/photos/Categorie/beatrice.png" }
@@ -25,7 +25,7 @@ const CATEGORIES = [
     nominees: [
       { name: "Boris GNANSA", photo: "/photos/Categorie/domrix.png" },
       { name: "Irène ADOKOU", photo: "/photos/Categorie/irene.png" },
-      { name: "Rebecca KPODOUH", photo: "/photos/Categorie/rebecca.png" },
+      { name: "Rebecca KPOEDOUN", photo: "/photos/Categorie/rebecca.png" },
       { name: "Rita ALOU", photo: "/photos/Categorie/rita.png" }
     ]
   },
@@ -61,7 +61,7 @@ const CATEGORIES = [
     nominees: [
       { name: "Julio ATTIDEKA", photo: "/photos/Categorie/julio.png" },
       { name: "Bernice ANANI", photo: "/photos/Categorie/bernice.png" },
-      { name: "Jean-Merc DOKITA", photo: "/photos/Categorie/jean-marc.png" },
+      { name: "Jean-Marc DOKITA", photo: "/photos/Categorie/jean-marc.png" },
       { name: "Daniel BOMBOMA", photo: "/photos/Categorie/daniel.png" },
       { name: "Ebenezer HOUSSOU", photo: "/photos/Categorie/ebenezer.png" }
     ]
@@ -433,7 +433,7 @@ function renderVotes(myVotes, results) {
   const activeTab = selectedCategoryId || CATEGORIES[0].id;
   const activeCategory = CATEGORIES.find((c) => c.id === activeTab);
   const voteStatus = document.getElementById("vote-status");
-  const totalVoted = Object.keys(myVotes).length;
+  const totalVoted = Object.values(myVotes).filter((list) => Array.isArray(list) && list.length > 0).length;
 
   if (!backendOffline) {
     voteStatus.style.display = totalVoted > 0 ? "block" : "none";
@@ -450,7 +450,9 @@ function renderVotes(myVotes, results) {
     button.setAttribute("role", "tab");
     button.setAttribute("aria-selected", category.id === activeTab ? "true" : "false");
     button.className = `category-tab${category.id === activeTab ? " is-active" : ""}`;
-    button.innerHTML = `<span class="tab-icon" aria-hidden="true">${category.icon}</span>${category.title}${myVotes[category.id] ? " ✓" : ""}`;
+    const countInCat = (myVotes[category.id] || []).length;
+    const checkMark = countInCat > 0 ? ` (${countInCat}/2)` : "";
+    button.innerHTML = `<span class="tab-icon" aria-hidden="true">${category.icon}</span>${category.title}${checkMark}`;
     button.addEventListener("click", () => {
       selectedCategoryId = category.id;
       renderVotes(myVotes, results);
@@ -468,7 +470,9 @@ function renderVotes(myVotes, results) {
     const count = results.tally[activeCategory.id]?.counts?.[nominee.name] || 0;
     const total = results.tally[activeCategory.id]?.totalVotes || 0;
     const percent = total > 0 ? Math.round((count / total) * 100) : 0;
-    const isMyVote = myVotes[activeCategory.id] === nominee.name;
+    const currentList = myVotes[activeCategory.id] || [];
+    const isMyVote = currentList.includes(nominee.name);
+
     const card = createVoteCard(
       activeCategory,
       nominee,
@@ -477,17 +481,25 @@ function renderVotes(myVotes, results) {
       percent,
       results.resultsPublic,
       false,
-      () => submitVote(activeCategory.id, nominee.name)
-        .then((res) => {
-          myVotes[activeCategory.id] = nominee.name;
-          showToast(res.isUpdate ? "Vote mis à jour ✦" : "Vote enregistré ✦");
-          return fetchPublicResults();
-        })
-        .then((updated) => {
-          Object.assign(results, updated);
-          renderVotes(myVotes, results);
-        })
-        .catch((e) => showToast(e.message || "Une erreur est survenue."))
+      () => {
+        // Si l'utilisateur a déjà voté pour ce candidat, on bloque tout de suite
+        if (isMyVote) {
+          showToast("Vote définitif : vous avez déjà voté pour ce candidat ✦");
+          return;
+        }
+
+        submitVote(activeCategory.id, nominee.name)
+          .then(() => {
+            myVotes[activeCategory.id] = [...currentList, nominee.name];
+            showToast("Vote enregistré ✦");
+            return fetchPublicResults();
+          })
+          .then((updated) => {
+            Object.assign(results, updated);
+            renderVotes(myVotes, results);
+          })
+          .catch((e) => showToast(e.message || "Une erreur est survenue."));
+      }
     );
     grid.appendChild(card);
   });

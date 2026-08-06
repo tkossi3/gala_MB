@@ -6,7 +6,7 @@ const categories = [
     icon: "🏆",
     description: "Celui ou celle qui a toujours le mot qui fait rire les étudiants de la maison.",
     nominees: [
-      { name: "Alphone HAGNABOE", photo: "/photos/Categorie/alphonse.png" },
+      { name: "Alphonse HAGNABOE", photo: "/photos/Categorie/alphonse.png" },
       { name: "Nestor GAHOUZO", photo: "/photos/Categorie/nestor.jpeg" },
       { name: "Angelo GLODJO", photo: "/photos/Categorie/angelo.png" },
       { name: "Beatrice AMETODJI", photo: "/photos/Categorie/beatrice.png" }
@@ -20,7 +20,7 @@ const categories = [
     nominees: [
       { name: "Boris GNANSA", photo: "/photos/Categorie/domrix.png" },
       { name: "Irène ADOKOU", photo: "/photos/Categorie/irene.png" },
-      { name: "Rebecca KPODOUH", photo: "/photos/Categorie/rebecca.png" },
+      { name: "Rebecca KPOEDOUN", photo: "/photos/Categorie/rebecca.png" },
       { name: "Rita ALOU", photo: "/photos/Categorie/rita.png" }
     ]
   },
@@ -55,7 +55,7 @@ const categories = [
     description: "Discret·e, mais indispensable.",
     nominees: [
       { name: "Julio ATTIDEKA", photo: "/photos/Categorie/julio.png" },
-      { name: "Jean-Merc DOKITA", photo: "/photos/Categorie/jean-marc.png" },
+      { name: "Jean-Marc DOKITA", photo: "/photos/Categorie/jean-marc.png" },
       { name: "Daniel BOMBOMA", photo: "/photos/Categorie/daniel.png" },
       { name: "Bernice ANANI", photo: "/photos/Categorie/bernice.png" },
       { name: "Ebenezer HOUSSOU", photo: "/photos/Categorie/ebenezer.png" }
