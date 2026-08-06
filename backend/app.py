@@ -44,7 +44,7 @@ CATEGORIES = [
         "nominees": [
             "Boris GNANSA",
             "Irène ADOKOU",
-            "Rebecca KPODOUH",
+            "Rebecca KPOEDOUN",
             "Rita ALOU"
         ]
     },
@@ -101,6 +101,7 @@ def create_tables(conn):
             category_id TEXT NOT NULL,
             nominee TEXT NOT NULL,
             fingerprint TEXT,
+            session_id TEXT,
             first_voted_at TEXT NOT NULL,
             updated_at TEXT NOT NULL,
             ip TEXT,
@@ -191,10 +192,15 @@ def get_voter_id(cookie_voter_id, fingerprint):
     return str(uuid.uuid4())
 
 
+# Lignes 185 - 188
 def map_votes(rows):
+    # Retourne la liste des votes avec leur session_id
     votes = {}
     for row in rows:
-        votes.setdefault(row["category_id"], []).append(row["nominee"])
+        votes.setdefault(row["category_id"], []).append({
+            "nominee": row["nominee"],
+            "sessionId": row["session_id"]
+        })
     return votes
 
 
@@ -240,14 +246,14 @@ def my_votes():
     fingerprint = normalize_text(request.args.get("fingerprint"))
     db = get_db()
     if voter_id:
-        rows = db.execute("SELECT category_id, nominee FROM votes WHERE voter_id = ?", (voter_id,)).fetchall()
+        rows = db.execute("SELECT category_id, nominee, session_id FROM votes WHERE voter_id = ?", (voter_id,)).fetchall()
     elif fingerprint:
-        rows = db.execute("SELECT category_id, nominee FROM votes WHERE fingerprint = ?", (fingerprint,)).fetchall()
+        rows = db.execute("SELECT category_id, nominee, session_id FROM votes WHERE fingerprint = ?", (fingerprint,)).fetchall()
     else:
         rows = []
     return jsonify({"votes": map_votes(rows)})
 
-
+# Lignes 232 - 276
 @app.route("/api/vote", methods=["POST"])
 def vote():
     body = request.get_json(silent=True)
@@ -257,6 +263,7 @@ def vote():
     category_id = normalize_text(body.get("categoryId"))
     nominee = normalize_text(body.get("nominee"))
     fingerprint = normalize_text(body.get("fingerprint"))
+    session_id = normalize_text(body.get("sessionId"))
 
     if not is_valid_vote(category_id, nominee):
         return jsonify({"error": f"Catégorie ou nominé invalide : {category_id} / {nominee}"}), 400
@@ -265,33 +272,40 @@ def vote():
     now = datetime.utcnow().isoformat()
     db = get_db()
 
-    # Récupérer les votes actuels dans cette catégorie
+    # Récupérer les votes existants du votant dans cette catégorie
     current_votes = db.execute(
-        "SELECT id, nominee FROM votes WHERE voter_id = ? AND category_id = ?",
+        "SELECT id, nominee, session_id FROM votes WHERE voter_id = ? AND category_id = ?",
         (voter_id, category_id)
     ).fetchall()
-    
-    current_nominees = [r["nominee"] for r in current_votes]
 
-    # 1. Bloquer si déjà voté pour ce candidat spécifique
-    if nominee in current_nominees:
-        return jsonify({"error": "Vous avez déjà voté pour ce candidat."}), 400
+    existing_vote = next((r for r in current_votes if r["nominee"] == nominee), None)
 
-    # 2. Bloquer si la limite de 2 votes est atteinte
-    if len(current_nominees) >= 2:
+    # 1. Si le candidat est déjà voté
+    if existing_vote:
+        # Si le vote appartient à la SESSION EN COURS -> Retrait autorisé (Toggle)
+        if existing_vote["session_id"] == session_id:
+            db.execute("DELETE FROM votes WHERE id = ?", (existing_vote["id"],))
+            db.commit()
+            return jsonify({"success": True, "action": "removed", "voterId": voter_id})
+        else:
+            # Si le vote date d'une VISITE PRÉCÉDENTE -> Verrouillé !
+            return jsonify({"error": "Ce vote a été effectué lors d'une visite précédente et ne peut plus être modifié."}), 403
+
+    # 2. Si l'utilisateur essaie de rajouter un vote mais a déjà 2 votes dans la catégorie
+    if len(current_votes) >= 2:
         return jsonify({"error": "Vous avez déjà utilisé vos 2 votes dans cette catégorie."}), 400
 
-    # 3. Enregistrer le vote
+    # 3. Enregistrer le nouveau vote avec le session_id courant
     try:
         db.execute(
-            "INSERT INTO votes (voter_id, category_id, nominee, fingerprint, first_voted_at, updated_at, ip) VALUES (?, ?, ?, ?, ?, ?, ?)",
-            (voter_id, category_id, nominee, fingerprint, now, now, request.remote_addr)
+            "INSERT INTO votes (voter_id, category_id, nominee, fingerprint, session_id, first_voted_at, updated_at, ip) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+            (voter_id, category_id, nominee, fingerprint, session_id, now, now, request.remote_addr)
         )
         db.commit()
     except sqlite3.IntegrityError:
         return jsonify({"error": "Cet appareil a déjà voté pour ce candidat."}), 409
 
-    response = make_response(jsonify({"success": True, "voterId": voter_id}))
+    response = make_response(jsonify({"success": True, "action": "added", "voterId": voter_id}))
     max_age = 400 * 24 * 60 * 60
     secure_cookie = request.headers.get("X-Forwarded-Proto", "http") == "https" or request.is_secure
     response.set_cookie(

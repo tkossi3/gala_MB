@@ -117,6 +117,15 @@ function getFingerprint() {
   return `${hash.toString(36)}-${((raw.split("").reverse().reduce((hash, ch) => ((hash * 33) ^ ch.charCodeAt(0)) >>> 0, 5381))).toString(36)}`;
 }
 
+function getSessionId() {
+  let sessionId = sessionStorage.getItem("gala_session_id");
+  if (!sessionId) {
+    sessionId = "sess_" + Math.random().toString(36).substring(2, 11) + "_" + Date.now();
+    sessionStorage.setItem("gala_session_id", sessionId);
+  }
+  return sessionId;
+}
+
 function getCanvasSignature() {
   try {
     const canvas = document.createElement("canvas");
@@ -165,7 +174,12 @@ function submitVote(categoryId, nominee) {
   return apiFetch("/api/vote", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ categoryId, nominee, fingerprint: getFingerprint() })
+    body: JSON.stringify({ 
+      categoryId, 
+      nominee, 
+      fingerprint: getFingerprint(),
+      sessionId: getSessionId()
+    })
   });
 }
 
@@ -238,7 +252,6 @@ function parseISOLocal(iso) {
   return new Date(year, month, day, hour, minute, second);
 }
 
-
 function createAboutSection() {
   const section = document.createElement("section");
   section.id = "about";
@@ -247,7 +260,7 @@ function createAboutSection() {
     <div class="section-inner">
       <p class="section-eyebrow reveal">01 — L'événement</p>
       <h2 class="section-title reveal">Une nuit taillée pour l'excellence</h2>
-      <p class="about-text reveal">La Maison Baobab célèbre une nouvelle année d'unité, d'élégance et de mémoire. Le temps d'une soirée, elle se pare d'or pour récompenser les personnalités qui ont marqué l'année'.</p>
+      <p class="about-text reveal">La Maison Baobab célèbre une nouvelle année d'unité, d'élégance et de mémoire. Le temps d'une soirée, elle se pare d'or pour récompenser les personnalités qui ont marqué l'année.</p>
       <div class="about-grid">
         <div class="about-card reveal"><span class="about-card-icon">◆</span><h3>Date</h3><p>Dimanche 9 Août 2026</p></div>
         <div class="about-card reveal"><span class="about-card-icon">◆</span><h3>Heure</h3><p>19:00 GMT</p></div>
@@ -430,48 +443,86 @@ function createVoteCard(category, nominee, isMyVote, count, percent, resultsPubl
 }
 
 function renderVotes(myVotes, results) {
+  const currentSessionId = getSessionId();
   const activeTab = selectedCategoryId || CATEGORIES[0].id;
   const activeCategory = CATEGORIES.find((c) => c.id === activeTab);
   const voteStatus = document.getElementById("vote-status");
-  const totalVoted = Object.values(myVotes).filter((list) => Array.isArray(list) && list.length > 0).length;
 
-  if (!backendOffline) {
+  // 1. Normalisation des votes de la catégorie (gère string, array ou object)
+  let rawCategoryVotes = myVotes[activeCategory.id];
+  let categoryVotes = [];
+  if (Array.isArray(rawCategoryVotes)) {
+    categoryVotes = rawCategoryVotes;
+  } else if (rawCategoryVotes) {
+    categoryVotes = [rawCategoryVotes];
+  }
+
+  // Calcul du nombre de catégories où l'utilisateur a voté
+  const totalVoted = Object.keys(myVotes).filter(cat => {
+    const val = myVotes[cat];
+    return Array.isArray(val) ? val.length > 0 : !!val;
+  }).length;
+
+  if (!backendOffline && voteStatus) {
     voteStatus.style.display = totalVoted > 0 ? "block" : "none";
     voteStatus.textContent = totalVoted > 0
-      ? `Vous avez déjà voté dans ${totalVoted}/${CATEGORIES.length} catégorie${totalVoted > 1 ? "s" : ""}. Cliquez sur « Voter » à nouveau pour changer un choix.`
+      ? `Vous avez voté dans ${totalVoted}/${CATEGORIES.length} catégorie(s).`
       : "";
   }
 
+  // 2. Rendu des onglets de catégories
   const tabs = document.getElementById("category-tabs");
-  tabs.innerHTML = "";
-  CATEGORIES.forEach((category) => {
-    const button = document.createElement("button");
-    button.type = "button";
-    button.setAttribute("role", "tab");
-    button.setAttribute("aria-selected", category.id === activeTab ? "true" : "false");
-    button.className = `category-tab${category.id === activeTab ? " is-active" : ""}`;
-    const countInCat = (myVotes[category.id] || []).length;
-    const checkMark = countInCat > 0 ? ` (${countInCat}/2)` : "";
-    button.innerHTML = `<span class="tab-icon" aria-hidden="true">${category.icon}</span>${category.title}${checkMark}`;
-    button.addEventListener("click", () => {
-      selectedCategoryId = category.id;
-      renderVotes(myVotes, results);
+  if (tabs) {
+    tabs.innerHTML = "";
+    CATEGORIES.forEach((category) => {
+      let rawCat = myVotes[category.id];
+      let catVotesCount = Array.isArray(rawCat) ? rawCat.length : (rawCat ? 1 : 0);
+      
+      const button = document.createElement("button");
+      button.type = "button";
+      button.setAttribute("role", "tab");
+      button.setAttribute("aria-selected", category.id === activeTab ? "true" : "false");
+      button.className = `category-tab${category.id === activeTab ? " is-active" : ""}`;
+      button.innerHTML = `<span class="tab-icon" aria-hidden="true">${category.icon}</span>${category.title}${catVotesCount > 0 ? ` (Voté)` : ""}`;
+      button.addEventListener("click", () => {
+        selectedCategoryId = category.id;
+        renderVotes(myVotes, results);
+      });
+      tabs.appendChild(button);
     });
-    tabs.appendChild(button);
-  });
+  }
 
-  document.getElementById("active-category-title").textContent = activeCategory.title;
-  document.getElementById("active-category-desc").textContent = activeCategory.description;
-  document.getElementById("active-category-total").textContent = results.resultsPublic ? `${results.tally[activeCategory.id]?.totalVotes || 0} votes au total` : "";
+  // 3. Mettre à jour le titre et la description
+  const titleEl = document.getElementById("active-category-title");
+  const descEl = document.getElementById("active-category-desc");
+  const totalEl = document.getElementById("active-category-total");
 
+  if (titleEl) titleEl.textContent = activeCategory.title;
+  if (descEl) descEl.textContent = activeCategory.description;
+  if (totalEl) totalEl.textContent = results.resultsPublic ? `${results.tally[activeCategory.id]?.totalVotes || 0} votes au total` : "";
+
+  // 4. Rendu de la grille des candidats
   const grid = document.getElementById("nominee-grid");
+  if (!grid) return;
   grid.innerHTML = "";
+
   activeCategory.nominees.forEach((nominee) => {
     const count = results.tally[activeCategory.id]?.counts?.[nominee.name] || 0;
     const total = results.tally[activeCategory.id]?.totalVotes || 0;
     const percent = total > 0 ? Math.round((count / total) * 100) : 0;
-    const currentList = myVotes[activeCategory.id] || [];
-    const isMyVote = currentList.includes(nominee.name);
+    
+    // Recherche universelle du candidat dans les votes enregistrés
+    const voteRecord = categoryVotes.find(v => {
+      if (typeof v === 'string') return v === nominee.name;
+      if (v && typeof v === 'object') return (v.nominee || v.name) === nominee.name;
+      return false;
+    });
+    
+    const isMyVote = !!voteRecord;
+
+    // Déterminer si le vote est verrouillé (session différente ou vote déjà validé au serveur)
+    const voteSessionId = (typeof voteRecord === 'object' && voteRecord !== null) ? voteRecord.sessionId : null;
+    const isLocked = isMyVote && (typeof voteRecord === 'string' || (voteSessionId && voteSessionId !== currentSessionId));
 
     const card = createVoteCard(
       activeCategory,
@@ -482,16 +533,25 @@ function renderVotes(myVotes, results) {
       results.resultsPublic,
       false,
       () => {
-        // Si l'utilisateur a déjà voté pour ce candidat, on bloque tout de suite
-        if (isMyVote) {
-          showToast("Vote définitif : vous avez déjà voté pour ce candidat ✦");
+        if (isLocked) {
+          showToast("🔒 Ce vote a été effectué lors d'une visite précédente et ne peut plus être modifié.");
           return;
         }
 
         submitVote(activeCategory.id, nominee.name)
-          .then(() => {
-            myVotes[activeCategory.id] = [...currentList, nominee.name];
-            showToast("Vote enregistré ✦");
+          .then((res) => {
+            if (res.action === "removed") {
+              myVotes[activeCategory.id] = categoryVotes.filter(v => 
+                (typeof v === 'string' ? v : (v.nominee || v.name)) !== nominee.name
+              );
+              showToast("Vote retiré ✦");
+            } else {
+              myVotes[activeCategory.id] = [
+                ...categoryVotes, 
+                { nominee: nominee.name, sessionId: currentSessionId }
+              ];
+              showToast("Vote enregistré ✦");
+            }
             return fetchPublicResults();
           })
           .then((updated) => {
@@ -501,6 +561,11 @@ function renderVotes(myVotes, results) {
           .catch((e) => showToast(e.message || "Une erreur est survenue."));
       }
     );
+
+    if (isLocked) {
+      card.classList.add("is-locked");
+    }
+
     grid.appendChild(card);
   });
 }
