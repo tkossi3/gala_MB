@@ -13,7 +13,7 @@ const CATEGORIES = [
     nominees: [
       { name: "Alphone HAGNABOE", photo: "/photos/Categorie/alphonse.png" },
       { name: "Nestor GAHOUZO", photo: "/photos/Categorie/nestor.jpeg" },
-      { name: "Angelo GLODJO", photo: "/photos/Categorie/nestor.jpeg" },
+      { name: "Angelo GLODJO", photo: "/photos/Categorie/Angelo.jpeg" },
       { name: "Beatrice AMETODJI", photo: "/photos/Categorie/beatrice.png" }
     ]
   },
@@ -60,9 +60,10 @@ const CATEGORIES = [
     description: "Discret·e, mais indispensable.",
     nominees: [
       { name: "Julio ATTIDEKA", photo: "/photos/Categorie/julio.png" },
+      { name: "Bernice ANANI", photo: "/photos/Categorie/bernice.png" },
       { name: "Jean-Merc DOKITA", photo: "/photos/Categorie/jean-marc.png" },
       { name: "Daniel BOMBOMA", photo: "/photos/Categorie/daniel.png" },
-      { name: "Bernice ANANI", photo: "/photos/Categorie/bernice.png" }
+      { name: "EBenezer HOUSSOU", photo: "/photos/Categorie/ebenezer.png" }
     ]
   }
 ];
