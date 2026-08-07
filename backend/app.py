@@ -10,7 +10,7 @@ DATA_DIR = os.path.join(BASE_DIR, "data")
 DB_PATH = os.path.join(DATA_DIR, "votes.db")
 FRONTEND_DIR = os.path.abspath(os.path.join(BASE_DIR, "..", "frontend"))
 COOKIE_NAME = "gala_voter_id"
-EVENT_DATE = os.getenv("EVENT_DATE", "2026-08-08T18:00:00")
+EVENT_DATE = os.getenv("EVENT_DATE", "2026-08-09T19:00:00")
 ADMIN_KEY = os.getenv("ADMIN_KEY", "baobab2026")
 
 app = Flask(__name__, static_folder=None)
